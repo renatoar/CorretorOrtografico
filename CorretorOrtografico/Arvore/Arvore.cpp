@@ -6,7 +6,7 @@
 
 /* 
  * File:   Arvore.cpp
- * Author: Renato Rizzo, Renato Kurosaki, Gustvo Leite
+ * Author: Renato Rizzo, Renato Kurosaki, Gustavo Leite
  *
  * Created on 10 de Maio de 2018, 18:10
  */
@@ -47,4 +47,32 @@ bool Arvore::busca(const std::string& palavra){
         }
     }
 }
+
+//Faz a rotacao simples em uma direcao determinada por dir
+void Arvore::rotaciona1(No*& no, Direcao dir){
+    int oposto = this->oposto(dir);
+    No* filho = no->subArvore[dir];
+    no->subArvore[dir] = filho->subArvore[oposto];
+    filho->subArvore[oposto] = no;
+    no = filho;
+}
+
+//Faz a rotacao dupla em uma direcao determinada por dir
+void Arvore::rotaciona2(No*& no, Direcao dir){
+    int oposto = this->oposto(dir);
+    No* filho = no->subArvore[dir]->subArvore[oposto];
+    filho->subArvore[dir]->subArvore[oposto] = filho->subArvore[dir];
+    filho->subArvore[dir] = no->subArvore[dir];
+    no->subArvore[dir] = filho;
+    filho = no->subArvore[dir];
+    no->subArvore[dir] = filho->subArvore[oposto];
+    filho->subArvore[oposto] = no;
+    no = filho;
+}
+
+//Troca a direcao dada
+inline Direcao Arvore::oposto(Direcao dir){
+    return (dir == DIREITA) ? ESQUERDA : DIREITA;
+}
+
 

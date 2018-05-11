@@ -6,7 +6,7 @@
 
 /* 
  * File:   Arvore.h
- * Author: Renato Rizzo, Renato Kurosaki, Gustvo Leite
+ * Author: Renato Rizzo, Renato Kurosaki, Gustavo Leite
  *
  * Created on 10 de Maio de 2018, 14:07
  */
