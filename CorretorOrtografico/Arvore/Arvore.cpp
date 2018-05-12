@@ -179,3 +179,63 @@ void Arvore::insereRecursivo(const std::string& palavra, No*& no, bool& alterado
             this->rebalInsere(no, dir, alterado);
     }
 }
+
+bool Arvore::remover(const std::string& palavra){
+    bool alterado = false;
+    //funcao recursiva para remover
+    return this->removeRecursivo(palavra, this->raiz, alterado);
+}
+
+//remove uma palavra da arvore e retorna true ou false caso nao tenha encontrado
+//a palavra
+bool Arvore::removeRecursivo(const std::string& palavra, No*& no, bool& alterado){
+    bool retorno = false; //retorno guarda se bem ou mal sucedida a operacao
+    //No nao foi encontrado
+    if(no == NULL){
+        alterado = false;
+        return false;
+    }
+    //Foi encontrado
+    else if(palavra == no->palavra){
+        //Se o no tiver dois filhos
+        if(no->subArvore[ESQUERDA] != NULL && no->subArvore[DIREITA] != NULL){
+            //encontra-se um novo substituto
+            No* substituto = no->subArvore[ESQUERDA];
+            
+            while(substituto->subArvore[DIREITA] != NULL)
+                substituto = substituto->subArvore[DIREITA];
+            
+            no->palavra = substituto->palavra;
+            retorno = removeRecursivo(no->palavra, no->subArvore[ESQUERDA], alterado);
+            
+            if(alterado) //se a altura mudou
+                rebalRemove(no, ESQUERDA, alterado);
+        }
+        //O no tem apenas um filho
+        else{
+            No* aux = no;
+            Direcao dir = (no->subArvore[ESQUERDA] == NULL) ? DIREITA : ESQUERDA;
+            no = no->subArvore[dir];
+            aux->subArvore[ESQUERDA] = NULL;
+            aux->subArvore[DIREITA] = NULL;
+            delete aux;
+            alterado = true;
+        }
+        return true;
+    }
+    //No ainda nao encontrado
+    else{
+        Direcao dir = (palavra > no->palavra) ? DIREITA : ESQUERDA;
+        if(no->subArvore[dir] != NULL){
+            retorno = this->removeRecursivo(palavra, no->subArvore[dir], alterado);
+        }
+        else{
+            alterado = false;
+            return false;
+        }
+        if(alterado){
+            this->rebalRemove(no, dir, alterado);
+        }
+        return retorno;
+    }
+}
