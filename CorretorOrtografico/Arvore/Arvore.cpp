@@ -263,3 +263,37 @@ Arvore* Arvore::carrega(const char* path){
         return NULL;
     }
 }
+
+//Salva a estrutura em um arquivo dado pelo path
+bool Arvore::Salvar(const char* path){
+    //Se a arvore esta vazia apagamos o arquivo
+    if(this->raiz == NULL){
+        std::remove(path);
+        return true;
+    }
+    
+    //Armazena as entradas em pre-ordem
+    std::ofstream stream(path);
+    if(stream.is_open()){
+        this->salvar(stream, this->raiz);
+        stream.close();
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+//Salva a arvore para um arquivo recursivamente de no em no
+bool Arvore::salvar(std::ofstream& stream, No* no){
+    if(stream.is_open()){
+        if(no != NULL){
+            stream << no->palavra << std::endl;
+            this->salvar(stream, no->subArvore[ESQUERDA]);
+            this->salvar(stream, no->subArvore[DIREITA]);
+        }
+        return true;
+    }
+    else
+        return false;
+}
