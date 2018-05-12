@@ -34,11 +34,11 @@ void Arvore::limpa(){ //O destrutor ira destruir as subarvores
 bool Arvore::busca(const std::string& palavra){
     No* aux = this->raiz;
     while(aux != NULL){
-        if(palavra.compare(aux->palavra) > 0){
+        if(palavra > aux->palavra){
             aux = aux->subArvore[DIREITA];
         }
         
-        else if(palavra.compare(aux->palavra) < 0){
+        else if(palavra < aux->palavra){
             aux = aux->subArvore[ESQUERDA];
         }
         
@@ -147,5 +147,35 @@ void Arvore::rebalRemove(No*& no, Direcao dir, bool& alterado){
     else{
         no->balanceado = oposto;
         alterado = false;
+    }
+}
+
+void Arvore::inserir(const std::string& palavra){
+    bool alterado = false;
+    //Chama o insere recursivo
+    this->insereRecursivo(palavra, this->raiz, alterado);
+}
+
+//Todas as alocacoes dinamicas sao tratadas com try-catch no caso de haver uma
+//excessao bad_alloc
+void Arvore::insereRecursivo(const std::string& palavra, No*& no, bool& alterado){
+    if(no == NULL){
+        try{
+            no = new No(palavra);
+            alterado = true;
+        }
+        catch(std::bad_alloc){
+            std::cout << "Nao ha memoria suficiente!" << std::endl;
+        }
+    }
+    //verifica se a palavra ja existe na Arvore
+    else if(no->palavra == palavra)
+        return;
+    else{
+        Direcao dir = (palavra > no->palavra) ? DIREITA : ESQUERDA;
+        alterado = false;
+        insereRecursivo(palavra, no->subArvore[dir], alterado);
+        if(alterado)
+            this->rebalInsere(no, dir, alterado);
     }
 }
