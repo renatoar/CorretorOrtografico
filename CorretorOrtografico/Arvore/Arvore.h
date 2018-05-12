@@ -44,9 +44,9 @@ private:
     bool Salvar(const char* path); //Salva a arvore no caminho dado para "path"
     void rotaciona2(No*& no, Direcao dir); //Rotciona duas vezes
     void rotaciona1(No*& no, Direcao dir); //Rotaciona uma vez
-    void atualizaBalanceamento(No* arvore, Direcao dir);
-    void rebalInsere(No*& arvore, Direcao dir, bool& alterado); //rebalanceamento apos insercao
-    void rebalRemove(No*& arvore, Direcao dir, bool& alterado); //rebalanceamento apos remocao
+    void atualizaBalanceamento(No* no, Direcao dir);
+    void rebalInsere(No*& no, Direcao dir, bool& alterado); //rebalanceamento apos insercao
+    void rebalRemove(No*& no, Direcao dir, bool& alterado); //rebalanceamento apos remocao
     void insereRecursivo(const std::string& palavra, No*& no, bool& alterado);
     void removeRecursivo(const std::string& palavra, No*& no, bool& alterado);
     bool salvar(std::ofstream& stream, No* no);

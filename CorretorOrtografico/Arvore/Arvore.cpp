@@ -75,4 +75,77 @@ inline Direcao Arvore::oposto(Direcao dir){
     return (dir == DIREITA) ? ESQUERDA : DIREITA;
 }
 
+//Atualiza o balanceamento apos uma rotacao
+void Arvore::atualizaBalanceamento(No* no, Direcao dir){
+    int oposto = this->oposto(dir);
+    int bal = no->subArvore[dir]->subArvore[oposto]->balanceado;
+    
+    if (bal == dir){
+        no->balanceado = IGUAL;
+        no->subArvore[dir]->balanceado = oposto;
+    }
+    else if (bal == oposto){
+        no->balanceado = dir;
+        no->subArvore[dir]->balanceado = IGUAL;
+    }
+    else{
+        no->balanceado = no->subArvore[dir]->balanceado = IGUAL;
+    }
+    no->subArvore[dir]->subArvore[oposto]->balanceado = IGUAL;
+}
 
+//Atualiza o balanceamento apos insercao
+void Arvore::rebalInsere(No*& no, Direcao dir, bool& alterado){
+    int oposto = this->oposto(dir);
+    
+    if (no->balanceado == dir){
+        if(no->subArvore[dir]->balanceado == dir){
+            no->subArvore[dir]->balanceado = 2;
+            no->balanceado = IGUAL;
+            rotaciona1(no, dir);
+        }
+        else{
+            atualizaBalanceamento(no, dir);
+            rotaciona2(no, dir);
+        }
+        alterado = false;
+    }
+    else if(no->balanceado == oposto){
+        no->balanceado = 2;
+        alterado = false;
+    }
+    else{
+        no->balanceado = dir;
+    }
+}
+
+
+//Faz o balanceamento apos uma remocao
+void Arvore::rebalRemove(No*& no, Direcao dir, bool& alterado){
+    Direcao oposto = this->oposto(dir);
+    
+    if(no->balanceado == dir){
+        no->balanceado = IGUAL;
+    }
+    else if(no->balanceado == oposto){
+        if(no->subArvore[oposto]->balanceado == oposto){
+            no->subArvore[oposto]->balanceado = IGUAL;
+            no->balanceado = IGUAL;
+            rotaciona1(no, oposto);
+        }
+        else if(no->subArvore[oposto]->balanceado == IGUAL){
+            no->subArvore[oposto]->balanceado = dir;
+            rotaciona1(no, oposto);
+        }
+        else{
+            atualizaBalanceamento(no, oposto);
+            rotaciona2(no, oposto);
+        }
+        alterado = false;
+    }
+    
+    else{
+        no->balanceado = oposto;
+        alterado = false;
+    }
+}
