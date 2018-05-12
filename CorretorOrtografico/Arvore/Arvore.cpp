@@ -16,6 +16,7 @@
 #include "Arvore.h"
 #include <iostream>
 #include <cstring>
+#include <fstream>
 using namespace std::string;
 /*
  * Definicao das funcoes da classe Arvore e tambem da classe No 
@@ -240,5 +241,25 @@ bool Arvore::removeRecursivo(const std::string& palavra, No*& no, bool& alterado
             this->rebalRemove(no, dir, alterado);
         }
         return retorno;
+    }
+}
+
+//Carrega o arquivo dado o caminho dele e preenche a arvore com as palavras
+Arvore* Arvore::carrega(const char* path){
+    std::ifstream stream(path);
+    if(stream.is_open()){
+        try{
+            Arvore* arvore= new Arvore();
+            std::string palavra;
+            while(!stream.eof()){
+                stream >> palavra;
+                if(stream.fail())
+                    break;
+                arvore->inserir(palavra);
+            }
+            stream.close();
+            return arvore;
+        }
+        return NULL;
     }
 }
