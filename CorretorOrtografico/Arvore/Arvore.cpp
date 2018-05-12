@@ -6,7 +6,10 @@
 
 /* 
  * File:   Arvore.cpp
- * Author: Renato Rizzo, Renato Kurosaki, Gustavo Leite
+ * Author: 
+ * Renato Araujo Rizzo  RA: 587788
+ * Renato Kurosaki      RA: 587834
+ * Gustavo Leite        RA: 552615
  *
  * Created on 10 de Maio de 2018, 18:10
  */
