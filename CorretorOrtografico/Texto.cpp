@@ -13,7 +13,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <c++/6/bits/stl_list.h>
+#include <list>
 
 using namespace std;
 
